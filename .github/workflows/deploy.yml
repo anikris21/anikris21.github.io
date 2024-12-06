@@ -38,6 +38,11 @@ jobs:
             "measurementId": "${{ secrets.FIREBASE_MEASUREMENT_ID }}"
           }' > build/config/firebase-config.json
 
+      - name: update Build Directory
+        run: |
+          # mkdir -p build
+          cp -r config build/
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
