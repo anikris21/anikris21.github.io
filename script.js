@@ -20,12 +20,64 @@ window.addEventListener('scroll', function() {
     }
 });
 
+// Import Firebase configuration loader
+import { loadFirebaseConfig } from './js/config-loader.js';
+
+// Initialize Firebase
+async function initializeFirebase() {
+    const firebaseConfig = await loadFirebaseConfig();
+    if (!firebaseConfig) {
+        console.error('Failed to load Firebase configuration');
+        return;
+    }
+    
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    // Initialize Analytics
+    firebase.analytics();
+    return firebase.firestore();
+}
+
 // Form submission handling
-document.getElementById('contact-form').addEventListener('submit', function(e) {
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    // Add your form submission logic here
-    alert('Thank you for your message! I will get back to you soon.');
-    this.reset();
+    const formStatus = document.getElementById('form-status');
+    const submitButton = this.querySelector('button[type="submit"]');
+    
+    // Get form data
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+
+    try {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+        
+        const db = await initializeFirebase();
+        if (!db) {
+            throw new Error('Firebase not initialized');
+        }
+        
+        // Save to Firebase
+        await db.collection('contacts').add(formData);
+        
+        // Show success message
+        formStatus.textContent = 'Thank you for your message! I will get back to you soon.';
+        formStatus.className = 'form-status success';
+        
+        // Reset form
+        this.reset();
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        formStatus.textContent = 'Sorry, there was an error sending your message. Please try again later.';
+        formStatus.className = 'form-status error';
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message';
+    }
 });
 
 // Add animation to elements when they come into view
