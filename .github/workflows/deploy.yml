@@ -66,16 +66,24 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: github-pages
+          path: build-pages
+
           # path: build
       - name: Display structure of downloaded files
-        run: ls -R;  
+        run: ls -R;
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+      - name: Deploy GitHub Pages site
+        uses: peaceiris/actions-gh-pages@v3.9.3
         with:
-          branch: gh-pages
-          folder: github-pages
-          clean: true
-          clean-exclude: |
-            .nojekyll
-            CNAME
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
+      # - name: Deploy to GitHub Pages
+      #   uses: JamesIves/github-pages-deploy-action@v4.4.3
+      #   with:
+      #     branch: gh-pages
+      #     folder: github-pages
+      #     clean: true
+      #     clean-exclude: |
+      #       .nojekyll
+      #       CNAME
