@@ -24,6 +24,7 @@ jobs:
       - name: Create Build Directory and Copy Files
         run: |
           mkdir -p build/config
+          mkdir -p ./config
           cp -r index.html styles.css js assets build/
           cp script.js build/
 
@@ -38,7 +39,7 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
         run: |
           echo "Creating Firebase config file..."
-          cat > build/config/firebase-config.json << EOF
+          cat > ./config/firebase-config.json << EOF
           {
             "apiKey": "$FIREBASE_API_KEY",
             "authDomain": "$FIREBASE_AUTH_DOMAIN",
@@ -50,8 +51,8 @@ jobs:
           }
           EOF
           echo "Firebase config file created at build/config/firebase-config.json"
-          cat build/config/firebase-config.json
-          ls -la build/config/
+          cat ./config/firebase-config.json
+          ls -la ./config/
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.3
