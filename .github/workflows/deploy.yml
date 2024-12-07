@@ -62,11 +62,19 @@ jobs:
           name: github-pages
           path: build
 
+      - name : Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          # path: build
+      - name: Display structure of downloaded files
+        run: ls -R;  
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           branch: gh-pages
-          folder: build
+          folder: github-pages
           clean: true
           clean-exclude: |
             .nojekyll
