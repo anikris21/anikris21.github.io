@@ -39,7 +39,7 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
         run: |
           echo "Creating Firebase config file..."
-          cat > ./config/firebase-config.json << EOF
+          cat > ./config/firebase-config.js << EOF
           {
             "apiKey": "$FIREBASE_API_KEY",
             "authDomain": "$FIREBASE_AUTH_DOMAIN",
@@ -50,9 +50,9 @@ jobs:
             "measurementId": "$FIREBASE_MEASUREMENT_ID"
           }
           EOF
-          echo "Firebase config file created at build/config/firebase-config.json"
-          cat ./config/firebase-config.json
-          cp ./config/firebase-config.json ./build/config/firebase-config.json
+          echo "Firebase config file created at build/config/firebase-config.js"
+          cat ./config/firebase-config.js
+          cp ./config/firebase-config.js ./build/config/firebase-config.js
           ls -la ./config/
           ls -la
  
