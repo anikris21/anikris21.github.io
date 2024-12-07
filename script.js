@@ -20,22 +20,29 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Import Firebase configuration loader
-import { loadFirebaseConfig } from './js/config-loader.js';
-
 // Initialize Firebase
 async function initializeFirebase() {
-    const firebaseConfig = await loadFirebaseConfig();
-    if (!firebaseConfig) {
-        console.error('Failed to load Firebase configuration');
-        return;
+    try {
+        // Try to load config from config/firebase-config.json
+        const response = await fetch('/config/firebase-config.json');
+        if (!response.ok) {
+            throw new Error('Failed to load Firebase configuration');
+        }
+        const firebaseConfig = await response.json();
+        
+        // Initialize Firebase if not already initialized
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        }
+        
+        return firebase.firestore();
+    } catch (error) {
+        console.error('Error initializing Firebase:', error);
+        document.getElementById('form-status').textContent = 'Contact form temporarily unavailable';
+        document.getElementById('form-status').className = 'form-status error';
+        return null;
     }
-    
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    // Initialize Analytics
-    firebase.analytics();
-    return firebase.firestore();
 }
 
 // Form submission handling
