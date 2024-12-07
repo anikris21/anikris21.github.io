@@ -52,7 +52,15 @@ jobs:
           EOF
           echo "Firebase config file created at build/config/firebase-config.json"
           cat ./config/firebase-config.json
+          cp ./config/firebase-config.json ./build/config/firebase-config.json
           ls -la ./config/
+          ls -la
+ 
+      - name : Updload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.3
