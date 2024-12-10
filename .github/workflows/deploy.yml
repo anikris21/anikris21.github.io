@@ -26,7 +26,7 @@ jobs:
       - name: Create Build Directory and Copy Files
         run: |
           mkdir -p build/config
-          mkdir -p ./config
+          # mkdir -p ./config
           cp -r index.html styles.css js assets build/
           cp script.js build/
 
@@ -41,7 +41,7 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
         run: |
           echo "Creating Firebase config file..."
-          cat > ./config/firebase-config.js << EOF
+          cat > ./build/config/firebase-config.js << EOF
           {
             "apiKey": "$FIREBASE_API_KEY",
             "authDomain": "$FIREBASE_AUTH_DOMAIN",
@@ -53,10 +53,10 @@ jobs:
           }
           EOF
           echo "Firebase config file created at build/config/firebase-config.js"
-          cat ./config/firebase-config.js
-          cp ./config/firebase-config.js ./build/config/firebase-config.js
-          ls -la ./config/
-          ls -la
+          cat ./build/config/firebase-config.js
+          # cp ./config/firebase-config.js ./build/config/firebase-config.js
+          # ls -la ./config/
+          ls -la ./build/
  
       - name : Updload artifacts
         uses: actions/upload-artifact@v4
