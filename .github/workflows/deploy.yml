@@ -64,11 +64,11 @@ jobs:
           name: github-pages
           path: build
 
-      - name : Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: build-pages
+      # - name : Download artifacts
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: github-pages
+      #     path: build-pages
 
       - name: Display structure of downloaded files
         run: ls -R;
@@ -76,8 +76,6 @@ jobs:
       - name: Deploy GitHub Pages site
         # uses: peaceiris/actions-gh-pages@v3.9.3
         uses: actions/deploy-pages@v4
-        with:
-          github_token: ${{ github.token }} 
           
 
       # - name: Deploy to GitHub Pages
